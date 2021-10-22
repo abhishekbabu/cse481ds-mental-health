@@ -6,6 +6,7 @@ First, create a virtual environment (I used Python 3.8.12) and activate it using
 python3 -m venv ./venv
 source ./venv/bin/activate
 ```
+Note: the activation command is only for macOS/Unix, there is a different command for Windows
 
 Then, install all of the required packages by running:
 
