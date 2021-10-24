@@ -1,0 +1,28 @@
+Variable name,Description,Source
+accessibility_to_cities,travel time to cities (minutes),https://explorer.earthengine.google.com/#detail/Oxford%2FMAP%2Faccessibility_to_cities_2015_v1_0
+elevation,elevation above sea level (m),https://explorer.earthengine.google.com/#detail/CGIAR%2FSRTM90_V4
+aspect,orientation of slope,https://explorer.earthengine.google.com/#detail/CGIAR%2FSRTM90_V4
+slope,angle of slope,https://explorer.earthengine.google.com/#detail/CGIAR%2FSRTM90_V4
+cropland_cover,percentage of country covered by cropland (%),http://globallandcover.com/home/Enbackground.aspx
+tree_canopy_cover,percentage cover by trees > 5m in height (%),https://explorer.earthengine.google.com/#detail/GLCF%2FGLS_TCC
+isothermality,Isothermality (diurnal range / annual range),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_coldestQuart,Precipitation of coldest quarter (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_driestMonth,Precipitation of driest month (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_driestQuart,Precipitation of driest quarter (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_mean_annual,Annual precipitation (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_seasonailty,Precipitation seasonality (coefficient of variation),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_warmestQuart,Precipitation of warmest quarter (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_wettestMonth,Precipitation of wettest month (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+rain_wettestQuart,Precipitation of wettest quarter (mm),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_annual_range,Temperature annual range (bio05-bio06) (%),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_coldestQuart,Mean temperature of coldest quarter (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_diurnal_range,Mean diurnal range (mean of monthly (max temp - min temp)) (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_driestQuart,Mean temperature of driest quarter (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_max_warmestMonth,Max temperature of warmest month (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_mean_annual,Temperature mean annual (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_min_coldestMonth,Min temperature of coldest month (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_seasonality,Temperature seasonality (Standard deviation * 100) (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_warmestQuart,Mean temperature of warmest quarter (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+temp_wettestQuart,Mean temperature of wettest quarter (degC),https://explorer.earthengine.google.com/#detail/WORLDCLIM%2FV1%2FBIO
+wind,Mean wind speed (m/s),https://explorer.earthengine.google.com/#detail/NASA%2FGLDAS%2FV021%2FNOAH%2FG025%2FT3H
+cloudiness,Average cloudy days per year (days),https://explorer.earthengine.google.com/#detail/NOAA%2FCDR%2FPATMOSX%2FV53
