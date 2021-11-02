@@ -12,3 +12,11 @@
 ## Source: [CDC Wonder Database - Compressed Mortality](https://wonder.cdc.gov/controller/datarequest/D140;jsessionid=28440C0A20D17C2915E5472122DF)
 - construct: mental health
     - suicide deaths
+- Notes:  
+Query Criteria:  
+Injury Intent:	Suicide  
+Group By:	County; Year  
+Show Totals:	Disabled 
+Show Zero Values:	False   
+Show Suppressed:	False  
+Calculate Rates Per:	100,000
