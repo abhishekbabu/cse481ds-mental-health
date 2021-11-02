@@ -3,7 +3,8 @@
 - construct: socioeconomic factors
     - education (% completed high school, % completed some college)
     - unemployment
-    - income inequality
+    - median household income
+    - income inequality (2015-2021)
 - construct: mental health
     - poor mental health days
     - mental health providers
