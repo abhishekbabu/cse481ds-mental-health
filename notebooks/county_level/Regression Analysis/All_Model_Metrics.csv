@@ -1,2 +1,3 @@
-Model Class,Average MAE,Average Alpha,Average Intercept
-Lasso Regression,1.318331218,12.68876843,14.59718017
+Model Class,Average MAE,Average RMSE,Average R2
+Lasso Regression Poor Mental Health Days,1.3183312181344409,1.7244874304888362,0.7369173698758289
+Lasso Regression Suicides,15.353854584645774,21.36368913089806,0.32393988836811527
