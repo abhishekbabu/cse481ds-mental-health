@@ -17,7 +17,8 @@ distances = c("glm", "mahalanobis")
 cor_matrix = cor(matching[complete.cases(matching[ , 12]),5:13])
 
 # nearest neighbor
-m.out <- matchit(precipitation_treated ~ Average.Temperature + RUCC,
+m.out <- matchit(precipitation_treated ~ High.school.graduation.raw.value + Some.college.raw.value + Unemployment.raw.value + Ratio.of.population.to.mental.health.providers + 
+                   RUCC + Average.Temperature,
                  data = matching, method = methods[1], distance = distances[1], replace = TRUE, reuse.max = 2)
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)

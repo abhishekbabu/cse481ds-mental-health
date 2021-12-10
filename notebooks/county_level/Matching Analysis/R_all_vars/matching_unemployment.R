@@ -66,8 +66,8 @@ normal_income <- (matching$Median.household.income.raw.value <= income_values[5]
 matching_sub = matching[normal_college & normal_income, ]
 
 # Do matching on unemployment again
-m.out <- matchit(unemployment_treated ~ Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
-                   RUCC,
+m.out <- matchit(unemployment_treated ~ High.school.graduation.raw.value + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
+                   RUCC + Average.Temperature + Average.Precipitation,
                  data = matching_sub, method = methods[1], distance = distances[1], replace = TRUE, reuse.max = 2)
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)
@@ -76,8 +76,8 @@ plot(m.out, type = "jitter", interactive = FALSE)
 gm <- get_matches(m.out)
 
 # On poor mental health days
-fitmd <- lm(Poor.mental.health.days.raw.value ~ unemployment_treated + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
-              RUCC, data = gm, 
+fitmd <- lm(Poor.mental.health.days.raw.value ~ unemployment_treated + High.school.graduation.raw.value + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
+              RUCC + Average.Temperature + Average.Precipitation, data = gm, 
              weights = weights)
 
 coeftest(fitmd, vcov. = vcovCL, cluster = ~subclass + id)["unemployment_treated",,drop = FALSE]
@@ -86,8 +86,8 @@ ggplot(data = gm, mapping = aes(y = unemployment_treated, x = Poor.mental.health
   geom_violin() +
   geom_boxplot(width=0.1)
 
-fitmd2 <- lm(Crude.Rate ~ unemployment_treated + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
-              RUCC, data = gm, 
+fitmd2 <- lm(Crude.Rate ~ unemployment_treated + High.school.graduation.raw.value + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
+               RUCC + Average.Temperature + Average.Precipitation, data = gm, 
             weights = weights)
 
 coeftest(fitmd2, vcov. = vcovCL, cluster = ~subclass + id)["unemployment_treated",,drop = FALSE]

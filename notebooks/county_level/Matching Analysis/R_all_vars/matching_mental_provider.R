@@ -17,7 +17,9 @@ distances = c("glm", "mahalanobis")
 cor_matrix = cor(matching[complete.cases(matching[ , 12]),5:13])
 
 # nearest neighbor
-m.out <- matchit(mental_health_provider_treated ~ Unemployment.raw.value + Median.household.income.raw.value + Some.college.raw.value + RUCC,
+m.out <- matchit(mental_health_provider_treated ~ High.school.graduation.raw.value +
+                 Unemployment.raw.value + Median.household.income.raw.value +
+                   Some.college.raw.value + RUCC + Average.Temperature + Average.Precipitation,
                  data = matching, method = methods[1], distance = distances[1], replace = TRUE, reuse.max = 3)
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)
@@ -25,7 +27,9 @@ plot(m.out, type = "jitter", interactive = FALSE)
 # estimate effect
 gm <- get_matches(m.out)
 table(table(gm$id[gm$mental_health_provider_treated == 0]))
-fitmd <- lm(Poor.mental.health.days.raw.value ~ mental_health_provider_treated + Unemployment.raw.value + Median.household.income.raw.value + Some.college.raw.value + RUCC, data = gm, 
+fitmd <- lm(Poor.mental.health.days.raw.value ~ mental_health_provider_treated + High.school.graduation.raw.value +
+              Unemployment.raw.value + Median.household.income.raw.value +
+              Some.college.raw.value + RUCC + Average.Temperature + Average.Precipitation, data = gm, 
             weights = weights)
 
 coeftest(fitmd, vcov. = vcovCL, cluster = ~subclass + id)["mental_health_provider_treated",,drop = FALSE]
@@ -43,7 +47,9 @@ ggplot(data = gm, mapping = aes(y = mental_health_provider_treated, x = Poor.men
   geom_boxplot(width=0.1)
 
 # Suicide
-fitmd2 <- lm(Crude.Rate ~ mental_health_provider_treated + Unemployment.raw.value + Median.household.income.raw.value + Some.college.raw.value + RUCC, data = gm, 
+fitmd2 <- lm(Crude.Rate ~ mental_health_provider_treated + High.school.graduation.raw.value +
+               Unemployment.raw.value + Median.household.income.raw.value +
+               Some.college.raw.value + RUCC + Average.Temperature + Average.Precipitation, data = gm, 
             weights = weights)
 coeftest(fitmd2, vcov. = vcovCL, cluster = ~subclass + id)["mental_health_provider_treated",,drop = FALSE]
 # plotting

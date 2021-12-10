@@ -19,7 +19,9 @@ distances = c("glm", "mahalanobis")
 cor_matrix = cor(matching[complete.cases(matching[ , 12]),5:13])
 
 # nearest neighbor
-m.out <- matchit(matching$college_treated ~ Unemployment.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + RUCC,
+m.out <- matchit(matching$college_treated ~ High.school.graduation.raw.value + Unemployment.raw.value + 
+                 Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers +
+                 RUCC + Average.Temperature + Average.Precipitation,
                  data = matching, method = methods[1], distance = distances[1])
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)
@@ -43,17 +45,19 @@ ggplot(data = m.data1) + # Unemployment.raw.value
 
 ggplot(data = m.data1) +
   geom_point(mapping = aes(x = Median.household.income.raw.value, y = RUCC, color = too_high)) +
-  #geom_hline(yintercept=72092.05, linetype="dashed", color = "red") +
-  geom_vline(xintercept=income_values[3], linetype="dashed", color = "red")
+  geom_vline(xintercept=income_values[6], linetype="dashed", color = "red")
 
 # Use less than 90% of college (0.7547552) for now
 # Cut off unemployment + low RUCC
-income_values <- quantile(matching$Median.household.income.raw.value, c(.25, .60,  .95, .96, .99))
-normal_income <- (matching$Median.household.income.raw.value <= income_values[3])
-matching_sub = matching[normal_income, ]
+income_values <- quantile(matching$Median.household.income.raw.value, c(.25, .60,  .95, .96, .99, .94))
+normal_income <- (matching$Median.household.income.raw.value <= income_values[6])
+high_RUCC <- (matching$RUCC > 1)
+matching_sub = matching[normal_income & high_RUCC, ]
 
 # Do matching on unemployment again
-m.out <- matchit(college_treated ~ Unemployment.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + RUCC,
+m.out <- matchit(college_treated ~ High.school.graduation.raw.value + Unemployment.raw.value + 
+                   Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers +
+                   RUCC + Average.Temperature + Average.Precipitation,
          data = matching_sub, method = methods[1], distance = distances[1], replace = TRUE, reuse.max = 4)
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)
