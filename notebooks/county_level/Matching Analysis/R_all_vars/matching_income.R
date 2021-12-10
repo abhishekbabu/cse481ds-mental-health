@@ -37,19 +37,22 @@ untreated_greatest_dist <- untreated.data[distance_greatest, "distance"]
 # create a new column: assign "too high" if distance greater than untreated_greatest_dist, "normal"
 m.data1$too_high <- (m.data1$distance >untreated_greatest_dist)
 
+college_values <- quantile(matching$Some.college.raw.value, c(.25, .50,  .85, .90, .95, .98))
+normal_college <- (matching$Some.college.raw.value <= college_values[4])
+
 # plotting
 ggplot(data = m.data1) + # Unemployment.raw.value
-  geom_point(mapping = aes(x = Some.college.raw.value, y = RUCC, color = too_high))
+  geom_point(mapping = aes(x = Some.college.raw.value, y = RUCC, color = too_high)) +
+  geom_vline(xintercept=college_values[5], linetype="dashed", color = "red") +
+  geom_vline(xintercept=college_values[6], linetype="dashed", color = "red")
 
 ggplot(data = m.data1) +
-  geom_point(mapping = aes(x = Some.college.raw.value, y = Median.household.income.raw.value, color = unemployment_treated)) +
-  geom_hline(yintercept=72092.05, linetype="dashed", color = "red") +
-  geom_vline(xintercept=0.7489542, linetype="dashed", color = "red")
+  geom_point(mapping = aes(x = Some.college.raw.value, y = Unemployment.raw.value, color = household_income_treated))+
+  geom_vline(xintercept=college_values[5], linetype="dashed", color = "red")
 
 # Use less than 90% of college (0.7547552) for now
 # Cut off unemployment + low RUCC
-college_values <- quantile(matching$Some.college.raw.value, c(.25, .50,  .85, .90, .95))
-normal_college <- (matching$Some.college.raw.value <= college_values[4])
+
 matching_sub = matching[normal_college, ]
 
 # second iteration
