@@ -27,12 +27,12 @@ library("sandwich")
  methods = c("nearest", "optimal", "full", "genetic")
  distances = c("glm", "mahalanobis")
  
-cor_matrix = cor(matching[complete.cases(matching[ , 12]),5:13])
+cor_matrix = cor(matching[complete.cases(matching[ , 12]),4:13])
 
 # nearest neighbor
-m.out <- matchit(unemployment_treated ~ Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
-                 RUCC,
-                 data = matching, method = methods[1], distance = distances[1], replace = TRUE)
+m.out <- matchit(unemployment_treated ~ High.school.graduation.raw.value + Some.college.raw.value + Median.household.income.raw.value + Ratio.of.population.to.mental.health.providers + 
+                 RUCC + Average.Temperature + Average.Precipitation
+                 , data = matching, method = methods[1], distance = distances[1], replace = TRUE)
 summary(m.out)
 plot(m.out, type = "jitter", interactive = FALSE)
 
