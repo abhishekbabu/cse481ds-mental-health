@@ -1,0 +1,127 @@
+> library("MatchIt")
+> 
+> # for plotting
+> library("ggplot2")
+> 
+> # for analysis
+> library("lmtest")
+> library("sandwich")
+> 
+> matching <- read.csv(file = 'df_matching.csv')
+> 
+> # nearest neighbor
+> m.out1 <- matchit(precipitation_treated ~ High.school.graduation.raw.value + Median.household.income.raw.value + 
++                    Some.college.raw.value + Unemployment.raw.value +
++                    RUCC + Ratio.of.population.to.mental.health.providers + Average.Temperature,
++                  data = matching, method = "nearest", distance = "glm", replace = TRUE,
++                  reuse.max = 6, caliper = 0.275)
+> summary(m.out1)
+
+Call:
+matchit(formula = precipitation_treated ~ High.school.graduation.raw.value + 
+    Median.household.income.raw.value + Some.college.raw.value + 
+    Unemployment.raw.value + RUCC + Ratio.of.population.to.mental.health.providers + 
+    Average.Temperature, data = matching, method = "nearest", 
+    distance = "glm", replace = TRUE, caliper = 0.275, reuse.max = 6)
+
+Summary of Balance for All Data:
+                                               Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+distance                                              0.5391        0.4690          0.5462     1.0246    0.1532
+High.school.graduation.raw.value                      0.8143        0.8028          0.1279     0.9622    0.0400
+Median.household.income.raw.value                 52770.8696    49700.8196          0.2313     1.1072    0.0807
+Some.college.raw.value                                0.6149        0.5896          0.2541     1.0612    0.0719
+Unemployment.raw.value                                0.0802        0.0829         -0.0884     1.6546    0.0652
+RUCC                                                  2.5554        2.4907          0.0424     1.0024    0.0091
+Ratio.of.population.to.mental.health.providers     5105.0621     5421.8396         -0.0334     0.9664    0.0370
+Average.Temperature                                  54.4527       58.5134         -0.5152     0.9773    0.1378
+                                               eCDF Max
+distance                                         0.2435
+High.school.graduation.raw.value                 0.0877
+Median.household.income.raw.value                0.1382
+Some.college.raw.value                           0.1114
+Unemployment.raw.value                           0.0980
+RUCC                                             0.0380
+Ratio.of.population.to.mental.health.providers   0.0866
+Average.Temperature                              0.2396
+
+
+Summary of Balance for Matched Data:
+                                               Means Treated Means Control Std. Mean Diff. Var. Ratio eCDF Mean
+distance                                              0.5391        0.5380          0.0086     1.0268    0.0012
+High.school.graduation.raw.value                      0.8143        0.8167         -0.0260     0.9803    0.0125
+Median.household.income.raw.value                 52770.8696    53896.0138         -0.0848     0.7140    0.0303
+Some.college.raw.value                                0.6149        0.6139          0.0101     1.0143    0.0144
+Unemployment.raw.value                                0.0802        0.0805         -0.0090     1.6788    0.0412
+RUCC                                                  2.5554        2.5504          0.0032     0.8776    0.0129
+Ratio.of.population.to.mental.health.providers     5105.0621     5130.6496         -0.0027     0.8400    0.0349
+Average.Temperature                                  54.4527       54.7624         -0.0393     1.0408    0.0187
+                                               eCDF Max Std. Pair Dist.
+distance                                         0.0321          0.0110
+High.school.graduation.raw.value                 0.0290          1.0455
+Median.household.income.raw.value                0.0518          1.0236
+Some.college.raw.value                           0.0371          0.9557
+Unemployment.raw.value                           0.0719          0.9146
+RUCC                                             0.0371          1.0709
+Ratio.of.population.to.mental.health.providers   0.0978          0.7029
+Average.Temperature                              0.0522          0.4125
+
+Percent Balance Improvement:
+                                               Std. Mean Diff. Var. Ratio eCDF Mean eCDF Max
+distance                                                  98.4       -9.0      99.2     86.8
+High.school.graduation.raw.value                          79.7       48.4      68.7     66.9
+Median.household.income.raw.value                         63.4     -230.8      62.5     62.5
+Some.college.raw.value                                    96.0       76.1      79.9     66.7
+Unemployment.raw.value                                    89.8       -2.9      36.8     26.7
+RUCC                                                      92.4    -5414.6     -41.7      2.5
+Ratio.of.population.to.mental.health.providers            91.9     -409.8       5.7    -12.9
+Average.Temperature                                       92.4      -74.3      86.4     78.2
+
+Sample Sizes:
+              Control Treated
+All            2201.     2240
+Matched (ESS)   771.7    2240
+Matched        1146.     2240
+Unmatched      1055.        0
+Discarded         0.        0
+
+> plot(m.out1, type = "jitter", interactive = FALSE)
+> 
+> # See https://kosukeimai.github.io/MatchIt/articles/estimating-effects.html
+> 
+> # Poor mental health days
+> gm <- get_matches(m.out1)
+> table(table(gm$id[gm$precipitation_treated == 0]))
+
+  1   2   3   4   5   6 
+608 262 136  61  18  61 
+> 
+> fitgm <- lm(Poor.mental.health.days.raw.value ~ precipitation_treated + High.school.graduation.raw.value + Median.household.income.raw.value + Some.college.raw.value + Unemployment.raw.value + RUCC + Ratio.of.population.to.mental.health.providers + Average.Temperature,
++             data = gm,
++             weights = weights)
+> 
+> coeftest(fitgm, vcov. = vcovCL, cluster = ~subclass + id)["precipitation_treated",,drop = FALSE]
+                         Estimate Std. Error   t value     Pr(>|t|)
+precipitation_treated -0.09030704 0.02013159 -4.485837 7.445059e-06
+> gm$precipitation_treated <- as.factor(gm$precipitation_treated)
+> ggplot(data = gm, mapping = aes(y = precipitation_treated, x = Poor.mental.health.days.raw.value)) +
++   geom_violin() +
++   geom_boxplot(width=0.1)
+> 
+> # Suicide rate
+> gm2 <- get_matches(m.out1)
+> table(table(gm2$id[gm2$precipitation_treated == 0]))
+
+  1   2   3   4   5   6 
+608 262 136  61  18  61 
+> 
+> fitgm2 <- lm(Crude.Rate ~ precipitation_treated + High.school.graduation.raw.value + Median.household.income.raw.value + Some.college.raw.value + Unemployment.raw.value + RUCC + Ratio.of.population.to.mental.health.providers + Average.Temperature,
++              data = gm2, 
++              weights = weights)
+> 
+> coeftest(fitgm2, vcov. = vcovCL, cluster = ~subclass + id)["precipitation_treated",,drop = FALSE]
+                       Estimate Std. Error t value   Pr(>|t|)
+precipitation_treated 0.5114153  0.2417948 2.11508 0.03447829
+> gm2$precipitation_treated <- as.factor(gm2$precipitation_treated)
+> ggplot(data = gm2, mapping = aes(y = precipitation_treated, x = Crude.Rate)) +
++   geom_violin() +
++   geom_boxplot(width=0.1)
